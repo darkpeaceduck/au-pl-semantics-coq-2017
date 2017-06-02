@@ -22,6 +22,7 @@ Notation "x  '::=' e"                         := (Assn  x e    ) (at level 37, n
 Notation "s1 ';;'  s2"                        := (Seq   s1 s2  ) (at level 35, right associativity).
 Notation "'COND' e 'THEN' s1 'ELSE' s2 'END'" := (If    e s1 s2) (at level 36, no associativity).
 Notation "'WHILE' e 'DO' s 'END'"             := (While e s    ) (at level 36, no associativity).
+Notation "'REPEAT' s 'UNTIL' e 'END'"             := (Seq s (While e s)   ) (at level 36, no associativity).
 
 (* Configuration *)
 Definition conf :=  (state Z * list Z * list Z)%type.
@@ -49,7 +50,16 @@ Inductive bs_int : stmt -> conf -> conf -> Prop :=
                        [| e |] st => Z.one -> (st, i, o) == s ==> c' -> c' == WHILE e DO s END ==> c'' ->
                           (st, i, o) == WHILE e DO s END ==> c''
   | bs_While_False : forall (st : state Z) (i o : list Z) (e : expr) (s : stmt),
-                       [| e |] st => Z.zero -> (st, i, o) == WHILE e DO s END ==> (st, i, o)
+                       [| e |] st => Z.zero -> (st, i, o) == WHILE e DO s END ==> (st, i, o) 
+  | bs_Rep_True  : forall (st : state Z) (i o : list Z) (c' c'' : conf) (e : expr) (s : stmt),
+                       [| e |] st => Z.one -> 
+                       c' == s ==> (st, i, o) ->
+                       (st, i, o) == REPEAT s UNTIL e END==> c''->
+                       c' == REPEAT s UNTIL e END ==> c''
+  |bs_Rep_False  : forall (st : state Z) (i o : list Z) (c' c'' : conf) (e : expr) (s : stmt),
+                       [| e |] st => Z.zero -> 
+                       c' == s ==> (st, i, o) ->
+                       c' == REPEAT s UNTIL e END==> (st, i, o)
 where "c1 == s ==> c2" := (bs_int s c1 c2).
 
 (* Big-step semantics is deterministic *)
