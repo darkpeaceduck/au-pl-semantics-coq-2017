@@ -15,14 +15,15 @@ Inductive stmt : Type :=
   | WRITE : expr -> stmt
   | Seq   : stmt -> stmt -> stmt
   | If    : expr -> stmt -> stmt -> stmt
-  | While : expr -> stmt -> stmt.
+  | While : expr -> stmt -> stmt
+  | Repeat : stmt -> expr -> stmt.
 
 (* Supplementary notation *)
 Notation "x  '::=' e"                         := (Assn  x e    ) (at level 37, no associativity).
 Notation "s1 ';;'  s2"                        := (Seq   s1 s2  ) (at level 35, right associativity).
 Notation "'COND' e 'THEN' s1 'ELSE' s2 'END'" := (If    e s1 s2) (at level 36, no associativity).
 Notation "'WHILE' e 'DO' s 'END'"             := (While e s    ) (at level 36, no associativity).
-Notation "'REPEAT' s 'UNTIL' e 'END'"             := (Seq s (While e s)   ) (at level 36, no associativity).
+Notation "'REPEAT' s 'UNTIL' e 'END'"             := (Repeat s e  ) (at level 36, no associativity).
 
 (* Configuration *)
 Definition conf :=  (state Z * list Z * list Z)%type.
@@ -51,15 +52,15 @@ Inductive bs_int : stmt -> conf -> conf -> Prop :=
                           (st, i, o) == WHILE e DO s END ==> c''
   | bs_While_False : forall (st : state Z) (i o : list Z) (e : expr) (s : stmt),
                        [| e |] st => Z.zero -> (st, i, o) == WHILE e DO s END ==> (st, i, o) 
-  | bs_Rep_True  : forall (st : state Z) (i o : list Z) (c' c'' : conf) (e : expr) (s : stmt),
-                       [| e |] st => Z.one -> 
-                       c' == s ==> (st, i, o) ->
-                       (st, i, o) == REPEAT s UNTIL e END==> c''->
-                       c' == REPEAT s UNTIL e END ==> c''
-  |bs_Rep_False  : forall (st : state Z) (i o : list Z) (c' c'' : conf) (e : expr) (s : stmt),
+  | bs_Rep_False  : forall (st : state Z) (i o : list Z) (c c' : conf) (e : expr) (s : stmt),
                        [| e |] st => Z.zero -> 
-                       c' == s ==> (st, i, o) ->
-                       c' == REPEAT s UNTIL e END==> (st, i, o)
+                       c == s ==> (st, i, o) ->
+                       (st, i, o) == REPEAT s UNTIL e END==> c'->
+                       c == REPEAT s UNTIL e END ==> c'
+  | bs_Rep_True  : forall (st : state Z) (i o : list Z) (c : conf) (e : expr) (s : stmt),
+                       [| e |] st => Z.one -> 
+                       c == s ==> (st, i, o) ->
+                       c == REPEAT s UNTIL e END==> (st, i, o)
 where "c1 == s ==> c2" := (bs_int s c1 c2).
 
 (* Big-step semantics is deterministic *)
@@ -81,7 +82,20 @@ Module SmokeTest.
 
   Lemma while_unfolds : forall (e : expr) (s : stmt) (c c' : conf),
                           (WHILE e DO s END) ~~~ (COND e THEN s ;; WHILE e DO s END ELSE SKIP END).
-  Proof. admit. Admitted.    
+  Proof. admit. Admitted.  
+
+  Lemma repeat_unfolds : forall (e : expr) (s : stmt),
+                          (REPEAT s UNTIL e END) ~~~ (s ;; COND e THEN SKIP ELSE REPEAT s UNTIL e END END).
+  Proof.
+    intros. apply bs_eq_intro. intros. split.
+    - intros. inversion H.
+      + apply bs_Seq with (c' := (st, i, o)). auto. apply bs_If_False. auto. auto.
+      + apply bs_Seq with (c' := (st, i, o)). auto. apply bs_If_True. auto. apply bs_Skip.
+    - intros. inversion H.
+      + intros. inversion H5. inversion H12. apply bs_Rep_True. auto. rewrite H8. auto.
+apply bs_Rep_False with (st := s0) (i := i) (o := o). auto. rewrite H8. auto. auto.
+ 
+  Qed.   
 
   Lemma while_false : forall (e : expr) (s : stmt) (st : state Z) (i o : list Z) (c : conf),
                         c == WHILE e DO s END ==> (st, i, o) -> [| e |] st => Z.zero.
