@@ -55,7 +55,7 @@ Inductive bs_int : stmt -> conf -> conf -> Prop :=
   | bs_Rep_False  : forall (st : state Z) (i o : list Z) (c c' : conf) (e : expr) (s : stmt),
                        [| e |] st => Z.zero -> 
                        c == s ==> (st, i, o) ->
-                       (st, i, o) == REPEAT s UNTIL e END==> c'->
+                       (st, i, o) == REPEAT s UNTIL e END==> c'-> bs_Rep_False ->
                        c == REPEAT s UNTIL e END ==> c'
   | bs_Rep_True  : forall (st : state Z) (i o : list Z) (c : conf) (e : expr) (s : stmt),
                        [| e |] st => Z.one -> 
