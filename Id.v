@@ -27,8 +27,18 @@ Notation "n >>  m" := (gt_id n m).
 Notation "n <<  m" := (lt_id n m).
 
 Lemma lt_eq_lt_id_dec: forall (id1 id2 : id), {id1 << id2} + {id1 = id2} + {id2 << id1}.
-Proof. admit. Admitted.
-
+Proof. intros [id1]. induction id1 as [| id1' IH]. 
++ intros [id2]. induction id2 as [| id2' IH]. 
+  - auto.
+- destruct IH. destruct s. 
+* left. left. inversion l. apply lt_conv. auto. 
+* left. left. inversion e. apply lt_conv. auto.
+* left. right. inversion l. omega.
++ intros [id2]. induction id2 as [| id2' IH'].
+- right. apply lt_conv. omega.
+-  destruct IH'. left. left. apply lt_conv. inversion s. inversion H. omega. inversion H. omega. 
+symmetry. 
+  
 Lemma gt_eq_gt_id_dec: forall (id1 id2 : id), {id1 >> id2} + {id1 = id2} + {id2 >> id1}.
 Proof. admit. Admitted.
 
