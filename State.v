@@ -63,7 +63,12 @@ Section S.
 
   Lemma update_same : forall (st : state) (x1 x2 : id) (n1 m : A),
     st / x1 => n1 -> st / x2 => m -> st [x1 <- n1] / x2 => m.
-  Proof. admit. Admitted.
+  Proof. 
+  intros. destruct (eq_id_dec x1 x2). 
+  + rewrite e in H. pose proof state_deterministic as X. 
+destruct X with (st := st) (x := x2) (n := n1) (m:=m). auto. auto. rewrite e. apply update_eq.
+  + apply update_neq. auto. auto.
+  Qed.
 
   Lemma update_permute : forall (st : state) (x1 x2 x3 : id) (n1 n2 m : A),
     x2 <> x1 -> 
