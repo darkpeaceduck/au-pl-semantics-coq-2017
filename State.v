@@ -25,8 +25,15 @@ Section S.
 
   Lemma state_deterministic: forall (st : state) (x : id) (n m : A),
     st / x => n -> st / x => m -> n = m.
-  Proof. admit. Admitted.    
+  Proof. 
+  intros. induction st.
+  + inversion H.
+  + inversion H. 
+    - inversion H0. congruence. congruence. 
+    - inversion H0. congruence. auto.
+  Qed.
 
+ 
   Lemma update_eq : forall (st : state) (x : id) (n : A),
     st [x <- n] / x => n.
   Proof. admit. Admitted.
