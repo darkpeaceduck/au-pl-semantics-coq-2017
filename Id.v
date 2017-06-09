@@ -95,7 +95,11 @@ intros. destruct H. inversion H0. omega.
 Qed. 
 
 Lemma le_lt_eq_id_dec : forall id1 id2 : id, id1 <<= id2 -> {id1 = id2} + {id2 >> id1}.
-Proof. admit. Admitted.
+Proof. 
+intros. pose proof gt_eq_gt_id_dec as X. destruct X with (id1 := id2) (id2 := id1).
++ auto. destruct s. right. auto. left. auto.
++ left. destruct g. inversion H. omega.
+Qed.
 
 Lemma neq_lt_gt_id_dec : forall id1 id2 : id, id1 <> id2 -> {id1 >> id2} + {id2 >> id1}.
 Proof. admit. Admitted.
