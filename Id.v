@@ -48,7 +48,12 @@ intros. pose proof lt_eq_lt_id_dec as X. destruct X with (id1 := id1) (id2 := id
 Qed. 
 
 Lemma le_gt_id_dec : forall id1 id2 : id, {id1 <<= id2} + {id1 >> id2}.
-Proof. admit. Admitted.
+Proof. 
+intros. pose proof lt_eq_lt_id_dec as X. destruct X with (id1 := id1) (id2 := id2) as [[L | E ] | R].
++ left. destruct id1. destruct id2. apply le_conv. inversion L. omega.
++ left. destruct id1. destruct id2. apply le_conv. inversion E. omega.
++ right. destruct id1. destruct id2. inversion R. apply gt_conv. omega.
+Qed.
 
 Lemma eq_dec : forall n m : nat, {n = m} + {n <> m}.
 Proof. admit. Admitted.
