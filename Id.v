@@ -102,8 +102,18 @@ intros. pose proof gt_eq_gt_id_dec as X. destruct X with (id1 := id2) (id2 := id
 Qed.
 
 Lemma neq_lt_gt_id_dec : forall id1 id2 : id, id1 <> id2 -> {id1 >> id2} + {id2 >> id1}.
-Proof. admit. Admitted.
+Proof. 
+intros. pose proof gt_eq_gt_id_dec as X. destruct X with (id1 := id2) (id2 := id1) as [[L | E ] | R].
++ right. auto.
++ left. destruct H. auto.
++ left. auto.
+Qed.
     
 Lemma eq_gt_id_false : forall id1 id2 : id, id1 = id2 -> id1 >> id2 -> False.
-Proof. admit. Admitted.
+Proof. 
+intros. pose proof gt_eq_gt_id_dec as X. destruct X with (id1 := id2) (id2 := id1) as [[L | E ] | R].
++ destruct L. inversion H0. omega.
++ destruct E. inversion H0. omega.
++ destruct H. inversion H0. omega.
+Qed.  
 
