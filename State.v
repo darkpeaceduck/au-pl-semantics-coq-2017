@@ -44,11 +44,22 @@ Section S.
 
   Lemma update_neq : forall (st : state) (x2 x1 : id) (n m : A),
     x2 <> x1 -> st / x1 => m -> st [x2 <- n] / x1 => m.
-  Proof. admit. Admitted.
+  Proof. 
+  intros. induction st.
+  + apply st_binds_tl. auto. auto.
+  + apply st_binds_tl. auto. auto.
+  Qed.
 
   Lemma update_shadow : forall (st : state) (x1 x2 : id) (n1 n2 m : A),
     st[x2 <- n1][x2 <- n2] / x1 => m -> st[x2 <- n2] / x1 => m.
-  Proof. admit. Admitted.
+  Proof. 
+  intros. inversion H. 
+  + apply update_eq. 
+  + apply update_neq. 
+    - auto. 
+    - inversion H6. symmetry in H7. contradiction. auto.
+  Qed.
+
 
   Lemma update_same : forall (st : state) (x1 x2 : id) (n1 m : A),
     st / x1 => n1 -> st / x2 => m -> st [x1 <- n1] / x2 => m.
