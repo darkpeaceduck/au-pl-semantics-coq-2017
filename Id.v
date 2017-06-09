@@ -72,7 +72,10 @@ destruct X with (n := n) (m := n0) as [L | R].
 Qed. 
 
 Lemma eq_id : forall (T:Type) x (p q:T), (if eq_id_dec x x then p else q) = p. 
-Proof. admit. Admitted.
+Proof. intros. destruct (eq_id_dec x x).
++ auto.
++ destruct x. destruct n. auto.
+Qed.
 
 Lemma neq_id : forall (T:Type) x y (p q:T), x <> y -> (if eq_id_dec x y then p else q) = q. 
 Proof. admit. Admitted.
