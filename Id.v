@@ -27,8 +27,34 @@ Notation "n >>  m" := (gt_id n m).
 Notation "n <<  m" := (lt_id n m).
 
 Lemma lt_eq_lt_id_dec: forall (id1 id2 : id), {id1 << id2} + {id1 = id2} + {id2 << id1}.
-Proof. admit. Admitted.
+Proof. intros [id1]. induction id1.
++ intros [id2]. destruct id2.
+  - left. right. auto.
+  - left. left. apply lt_conv. omega.
++ intros [id2']. destruct IHid1 with (id2 := (Id id2')) as [[ L | E] | R]. 
+     - left. destruct id2'. 
+ * left. inversion L. apply lt_conv. inversion H1.
+ * destruct IHid1 with (id2 := (Id (id2'))). left. apply lt_conv. inversion L. 
+     - left. left. apply lt_conv. inversion E. omega.
+     -  destruct n0 as [|n0']. 
+    * left. left. apply lt_conv. omega.
+    * destruct n0 as [|n0']. left. right. inversion R. inversion H1. auto. inversion H3. apply lt_conv R.
 
+
+induction n0.
+    * left. left. inversion l. omega.
+    * induction n0. left. right. inversion l. destruct n. auto. omega. right.
+apply lt_conv. inversion l. 
+
+  - left. left. apply lt_conv. omega.
++ intros . destruct id2. destruct id1'. 
+  - destruct n. right. apply lt_conv. omega. destruct IH with (id2 := Id (S (S n))).
+inversion s. left. left. apply lt_conv. inversion H. omega.
+   - right. apply lt_conv. omega.
+  - destruct IH with (id2 := (S n)) .
+-  destruct IH'. left. left. apply lt_conv. c s. inversion H. omega. inversion H. omega. 
+symmetry. 
+  
 Lemma gt_eq_gt_id_dec: forall (id1 id2 : id), {id1 >> id2} + {id1 = id2} + {id2 >> id1}.
 Proof. admit. Admitted.
 
