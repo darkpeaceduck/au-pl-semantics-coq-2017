@@ -56,10 +56,20 @@ intros. pose proof lt_eq_lt_id_dec as X. destruct X with (id1 := id1) (id2 := id
 Qed.
 
 Lemma eq_dec : forall n m : nat, {n = m} + {n <> m}.
-Proof. admit. Admitted.
+Proof. 
+intros. pose proof lt_eq_lt_id_dec as X. destruct X with (id1 := (Id n)) (id2 := (Id m)) as [[L | E ] | R].
++ right. inversion L. omega.
++ left. inversion E. omega.
++ right. inversion R. omega.
+Qed.
 
 Lemma eq_id_dec : forall id1 id2 : id, {id1 = id2} + {id1 <> id2}.
-Proof. admit. Admitted. 
+Proof. 
+intros. pose proof eq_dec as X. destruct id1. destruct id2. 
+destruct X with (n := n) (m := n0) as [L | R].
++ left. auto. 
++ right. intros eq. inversion eq. auto.
+Qed. 
 
 Lemma eq_id : forall (T:Type) x (p q:T), (if eq_id_dec x x then p else q) = p. 
 Proof. admit. Admitted.
