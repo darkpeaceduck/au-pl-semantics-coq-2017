@@ -36,7 +36,11 @@ Section S.
  
   Lemma update_eq : forall (st : state) (x : id) (n : A),
     st [x <- n] / x => n.
-  Proof. admit. Admitted.
+  Proof. 
+  intros. induction st.
+  + apply st_binds_hd.
+  + apply st_binds_hd.
+  Qed.
 
   Lemma update_neq : forall (st : state) (x2 x1 : id) (n m : A),
     x2 <> x1 -> st / x1 => m -> st [x2 <- n] / x1 => m.
