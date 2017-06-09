@@ -90,7 +90,9 @@ intros. destruct H. inversion H0. omega.
 Qed.
 
 Lemma le_gt_id_false : forall id1 id2 : id, id2 <<= id1 -> id2 >> id1 -> False.
-Proof. admit. Admitted.
+Proof. 
+intros. destruct H. inversion H0. omega.
+Qed. 
 
 Lemma le_lt_eq_id_dec : forall id1 id2 : id, id1 <<= id2 -> {id1 = id2} + {id2 >> id1}.
 Proof. admit. Admitted.
