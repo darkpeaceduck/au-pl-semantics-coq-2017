@@ -31,32 +31,21 @@ Proof. intros [id1]. induction id1.
 + intros [id2]. destruct id2.
   - left. right. auto.
   - left. left. apply lt_conv. omega.
-+ intros [id2']. destruct IHid1 with (id2 := (Id id2')) as [[ L | E] | R]. 
-     - left. destruct id2'. 
- * left. inversion L. apply lt_conv. inversion H1.
- * destruct IHid1 with (id2 := (Id (id2'))). left. apply lt_conv. inversion L. 
-     - left. left. apply lt_conv. inversion E. omega.
-     -  destruct n0 as [|n0']. 
-    * left. left. apply lt_conv. omega.
-    * destruct n0 as [|n0']. left. right. inversion R. inversion H1. auto. inversion H3. apply lt_conv R.
-
-
-induction n0.
-    * left. left. inversion l. omega.
-    * induction n0. left. right. inversion l. destruct n. auto. omega. right.
-apply lt_conv. inversion l. 
-
-  - left. left. apply lt_conv. omega.
-+ intros . destruct id2. destruct id1'. 
-  - destruct n. right. apply lt_conv. omega. destruct IH with (id2 := Id (S (S n))).
-inversion s. left. left. apply lt_conv. inversion H. omega.
-   - right. apply lt_conv. omega.
-  - destruct IH with (id2 := (S n)) .
--  destruct IH'. left. left. apply lt_conv. c s. inversion H. omega. inversion H. omega. 
-symmetry. 
++ intros [id2']. destruct id2' as [|id2''].
+- right.  apply lt_conv. omega.
+- destruct IHid1 with (id2 := Id (id2'')) as [[L | E ] | R].
+* left. left. apply lt_conv. inversion L. omega.
+* left. right. inversion E.  auto.
+* right. apply lt_conv. inversion R. omega.
+Qed. 
   
 Lemma gt_eq_gt_id_dec: forall (id1 id2 : id), {id1 >> id2} + {id1 = id2} + {id2 >> id1}.
-Proof. admit. Admitted.
+Proof. 
+intros. pose proof lt_eq_lt_id_dec as X. destruct X with (id1 := id1) (id2 := id2) as [[L | E ] | R].
++ right. destruct id1. destruct id2. inversion L. apply gt_conv. omega.
++ left. right.  auto.
++ left. left. destruct id1. destruct id2. inversion R. apply gt_conv. omega.
+Qed. 
 
 Lemma le_gt_id_dec : forall id1 id2 : id, {id1 <<= id2} + {id1 >> id2}.
 Proof. admit. Admitted.
