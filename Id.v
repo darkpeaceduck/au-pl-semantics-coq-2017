@@ -78,7 +78,11 @@ Proof. intros. destruct (eq_id_dec x x).
 Qed.
 
 Lemma neq_id : forall (T:Type) x y (p q:T), x <> y -> (if eq_id_dec x y then p else q) = q. 
-Proof. admit. Admitted.
+Proof. 
+intros. destruct (eq_id_dec x y).
++ destruct H. auto.
++ auto.
+Qed.
 
 Lemma lt_gt_id_false : forall id1 id2 : id, id1 >> id2 -> id2 >> id1 -> False.
 Proof. admit. Admitted.
