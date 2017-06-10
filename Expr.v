@@ -213,9 +213,71 @@ Qed.
 *)
 Lemma undefined_variable: forall (e : expr) (s : state Z) (id : id),
   id ? e -> (forall (z : Z), ~ (s / id => z)) -> (forall (z : Z), ~ ([| e |] s => z)).
-Proof. admit. Admitted.
+Proof. 
+unfold not.
+intros.
+induction H.
++ inversion H1. apply H0 in H2. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H8. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H8. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H8. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H8. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H8. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H8. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H8. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H8. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H8. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H8. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
+  - destruct H.
+    *  remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+    * remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
+  - destruct H.
+    *  remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+    * remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
+  - destruct H.
+    *  remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+    * remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
+  - destruct H.
+    *  remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+    * remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
+  - destruct H.
+    *  remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+    * remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
+  - destruct H.
+    *  remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H9. auto.
+    * remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H9. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H10. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H10. auto.
++ inversion H1. destruct H.
+  - remember (defined_expression a s za id). destruct e. auto. auto. apply H0 in H10. auto.
+  - remember (defined_expression b s zb id). destruct e. auto. auto. apply H0 in H10. auto.
+Qed.
 
-(* The evaluation relation is deterministic *)
+
 Lemma bs_eval_deterministic: forall (e : expr) (s : state Z) (z1 z2 : Z),
   [| e |] s => z1 -> [| e |] s => z2 -> z1 = z2.
 Proof. admit. Admitted.
