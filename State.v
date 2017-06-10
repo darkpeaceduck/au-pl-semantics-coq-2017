@@ -98,8 +98,13 @@ remember ( state_deterministic
 x2 n1 m).
 destruct e0.
 auto. auto. apply update_eq. apply update_eq.
-fold update in H.
 
-apply update_eq. auto.
-pose proof update_same as X.
+- apply st_binds_tl. auto. 
+apply st_binds_tl. auto.
+inversion H0. contradiction. 
+inversion H7. contradiction.
+auto.
+Qed.
+
+
 End S.
