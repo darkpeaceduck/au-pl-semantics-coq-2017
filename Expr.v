@@ -573,18 +573,8 @@ intros. split.
 apply eq_intro. intros. split.
 - apply eq_helper. apply eq_symm. auto.
 - apply eq_helper. auto.
-+ intros. apply eq_intro. intros.
-inversion H. intros. split.
-- intros. inversion H3. 
-*
-
-
-inversion H0. intros. apply eq_helper. apply eq_symm. auto.
-- apply eq_helper. auto.
-rewrite H8. apply H1. 
-
-
-
++ intros. inversion H. apply H0 with (C := Hole).
+Qed. 
 
 
 
