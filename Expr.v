@@ -145,8 +145,69 @@ where "x ? e" := (V e x).
 *)
 Lemma defined_expression: forall (e : expr) (s : state Z) (z : Z) (id : id),
   [| e |] s => z -> id ? e -> exists z', s / id => z'.
-Proof. admit. Admitted.
-
+Proof. 
+intros. 
+induction H.
++ inversion H0.
++ inversion H0. symmetry in H1. rewrite H1. exists z. auto.
++ inversion H0. destruct H5. 
+  - apply IHbs_eval1 in H5. auto.
+  - apply IHbs_eval2 in H5. auto.
++ inversion H0. destruct H5. 
+  - apply IHbs_eval1 in H5. auto.
+  - apply IHbs_eval2 in H5. auto.
++ inversion H0. destruct H5. 
+  - apply IHbs_eval1 in H5. auto.
+  - apply IHbs_eval2 in H5. auto.
++ inversion H0. destruct H5. 
+  - apply IHbs_eval1 in H5. auto.
+  - apply IHbs_eval2 in H5. auto.
++ inversion H0. destruct H5. 
+  - apply IHbs_eval1 in H5. auto.
+  - apply IHbs_eval2 in H5. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H6. 
+  - apply IHbs_eval1 in H6. auto.
+  - apply IHbs_eval2 in H6. auto.
++ inversion H0. destruct H7. 
+  - apply IHbs_eval1 in H7. auto.
+  - apply IHbs_eval2 in H7. auto.
++ inversion H0. destruct H7. 
+  - apply IHbs_eval1 in H7. auto.
+  - apply IHbs_eval2 in H7. auto.
+Qed.
 (* If a variable in expression is undefined in some state, then the expression
    is undefined is that state as well
 *)
