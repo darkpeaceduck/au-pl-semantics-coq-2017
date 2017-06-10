@@ -518,7 +518,33 @@ where "e1 '~c~' e2" := (contextual_equivalent e1 e2).
 
 (* Contextual equivalence is equivalent to the semantic one *)
 Lemma eq_eq_ceq: forall (e1 e2 : expr), e1 ~~ e2 <-> e1 ~c~ e2.
-Proof. admit. Admitted.
+Proof. 
+intros. split.
++ intros. apply ceq_intro. intros.
+apply eq_intro. intros. split.
+- revert n. induction C. 
+* intros. inversion H. apply H1. auto.
+* intros. inversion H0.
+apply bs_Add. apply IHC. auto. auto.
+apply bs_Sub. apply IHC. auto. auto.
+apply bs_Mul. apply IHC. auto. auto.
+apply bs_Div. apply IHC. auto. auto.
+apply bs_Mod. apply IHC. auto. auto.
+apply bs_Le_T with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Le_F with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Lt_T with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Lt_F with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Ge_T with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Ge_F with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Gt_T with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Gt_F with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Eq_T with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Eq_F with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Ne_T with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_Ne_F with (za := za) (zb := zb). apply IHC. auto. auto. auto.
+apply bs_And with (za := za) (zb := zb). apply IHC. auto. auto. auto. auto.
+apply bs_Or with (za := za) (zb := zb). apply IHC. auto. auto. auto. auto.
+rewrite H8. apply H1. 
 
 
 
