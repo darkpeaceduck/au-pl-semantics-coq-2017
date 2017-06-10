@@ -284,13 +284,47 @@ Proof.
 induction e. 
 + intros. inversion H. inversion H0. omega.
 + intros. inversion H. inversion H0. apply state_deterministic with (st := s) (x := i) (n := z1) (m := z2). auto. auto.
-+ intros. destruct H. admit. admit. inversion H0. admit.
++ intros. destruct b. 
+- inversion H. inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+- inversion H. inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+- inversion H. inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+- inversion H. inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+- inversion H. inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+- inversion H. inversion H0. auto. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega. auto.
+- inversion H. inversion H0. auto. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega. auto.
+-inversion H. inversion H0. auto. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega. auto.
+-inversion H. inversion H0. auto. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega. auto.
+-inversion H. inversion H0. auto. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. contradiction. 
+inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. contradiction. auto.  
+-inversion H. inversion H0. auto. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. contradiction. 
+inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. contradiction. auto. 
+-inversion H. inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+-inversion H. inversion H0. remember (IHe1 s za za0). destruct e. auto. auto.
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+Qed.
 
-inversion H0.
-  - remember (IHe1 s za za0). destruct e. auto. auto. 
-remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
-  - remember (IHe1 s za za0). destruct e. auto. auto. 
-remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
 
 
 
