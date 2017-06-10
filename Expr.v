@@ -106,12 +106,17 @@ Module SmokeTest.
 
   Lemma nat_always : 
     forall (n : nat) (s : state Z), [| Nat n |] s => (Z.of_nat n).
-  Proof. admit. Admitted.
+  Proof. 
+  intros. apply bs_Nat.
+  Qed.
 
   Lemma double_and_sum : 
     forall (s : state Z) (e : expr) (z : Z), 
       [| e [*] (Nat 2) |] s => z -> [| e [+] e |] s => z.
-  Proof. admit. Admitted.
+  Proof. 
+  intros. pose proof bs_Mul as X. inversion H. inversion H5. replace (Z.mul za (Z.of_nat 2)) with (Z.add za za).
+  apply bs_Add. auto. auto. simpl. omega.
+  Qed.
 
 End SmokeTest.
 
