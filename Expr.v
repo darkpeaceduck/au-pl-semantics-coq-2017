@@ -280,7 +280,19 @@ Qed.
 
 Lemma bs_eval_deterministic: forall (e : expr) (s : state Z) (z1 z2 : Z),
   [| e |] s => z1 -> [| e |] s => z2 -> z1 = z2.
-Proof. admit. Admitted.
+Proof. 
+induction e. 
++ intros. inversion H. inversion H0. omega.
++ intros. inversion H. inversion H0. apply state_deterministic with (st := s) (x := i) (n := z1) (m := z2). auto. auto.
++ intros. destruct H. admit. admit. inversion H0. admit.
+
+inversion H0.
+  - remember (IHe1 s za za0). destruct e. auto. auto. 
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+  - remember (IHe1 s za za0). destruct e. auto. auto. 
+remember (IHe2 s zb zb0). destruct e0. auto. auto. omega.
+
+
 
 (* Equivalence of states w.r.t. an identifier *)
 Definition equivalent_states (s1 s2 : state Z) (id : id) :=
