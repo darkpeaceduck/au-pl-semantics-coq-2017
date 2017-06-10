@@ -74,6 +74,32 @@ destruct X with (st := st) (x := x2) (n := n1) (m:=m). auto. auto. rewrite e. ap
     x2 <> x1 -> 
     st [x2 <- n1][x1 <- n2] / x3 => m ->
     st [x1 <- n2][x2 <- n1] / x3 => m.
-  Proof. admit. Admitted.  
+  Proof. 
+  intros. destruct (eq_id_dec x1 x3).
+  + symmetry in e. rewrite e in H0. rewrite e. apply st_binds_tl. auto. 
+remember (update_eq ((st) [x2 <- n1]) x1 n2).
+remember (state_deterministic ((st) [x2 <- n1] [x1 <- n2])
+x1 n2 m).
+destruct e0. auto. auto. apply update_eq.
++  destruct (eq_id_dec x2 x3).
+-  symmetry in e.
+rewrite e in H0.
+rewrite e.
+pose proof st_binds_tl as X.
+unfold update in H0. auto.
+remember (X 
+(((x2, n1) :: st))
+(x2)
+(n1)
+(x1) 
+(n2)) . apply s in H.
+remember ( state_deterministic
+((x1, n2) :: (x2, n1) :: st)
+x2 n1 m).
+destruct e0.
+auto. auto. apply update_eq. apply update_eq.
+fold update in H.
 
+apply update_eq. auto.
+pose proof update_same as X.
 End S.
