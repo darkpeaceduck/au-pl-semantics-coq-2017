@@ -471,7 +471,12 @@ where "e1 '~~' e2" := (equivalent e1 e2).
 
 (* Semantic equivalence is an equivalence relation *)
 Lemma eq_refl: forall (e : expr), e ~~ e.
-Proof. admit. Admitted.
+Proof. 
+intros.
+apply eq_intro. intros. split.
++ apply variable_relevance. intros. split. auto. auto.
++ apply variable_relevance. intros. split. auto. auto.
+Qed.
 
 Lemma eq_symm: forall (e1 e2 : expr), e1 ~~ e2 -> e2 ~~ e1.
 Proof. admit. Admitted.
