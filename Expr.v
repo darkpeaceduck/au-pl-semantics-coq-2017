@@ -336,9 +336,128 @@ Definition equivalent_states (s1 s2 : state Z) (id : id) :=
    of occurring variables
 *)
 Lemma variable_relevance: forall (e : expr) (s1 s2 : state Z) (z : Z),
-  (forall (id : id) (z : Z), id ? e -> equivalent_states s1 s2 id) -> 
+  (forall (id : id), id ? e -> equivalent_states s1 s2 id) -> 
   [| e |] s1 => z -> [| e |] s2 => z.
-Proof. admit. Admitted.
+Proof. 
+intros e.
+induction e.
++ intros. inversion H0. auto.
++ intros. inversion H0. remember (H i). destruct e with (z := z). apply v_Var.
+apply bs_Var. auto.
++ destruct b.
+- intros. inversion H0. apply bs_Add. 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Add. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Add. auto. auto.
+- intros. inversion H0. apply bs_Sub. 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Sub. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Sub. auto. auto.
+- intros. inversion H0. apply bs_Mul. 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Mul. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Mul. auto. auto.
+- intros. inversion H0. apply bs_Div. 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Div. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Div. auto. auto.
+- intros. inversion H0. apply bs_Mod. 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Mod. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Mod. auto. auto.
+- intros. inversion H0. apply bs_Le_T with (za := za) (zb := zb). 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Le. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Le. auto. auto.
+ * auto. 
+ * apply bs_Le_F with (za := za) (zb := zb).
+   apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Le. auto. auto.
+   apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Le. auto. auto.
+   auto. 
+- intros. inversion H0. apply bs_Lt_T with (za := za) (zb := zb). 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Lt. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Lt. auto. auto.
+ * auto. 
+ * apply bs_Lt_F with (za := za) (zb := zb).
+   apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Lt. auto. auto.
+   apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Lt. auto. auto.
+   auto. 
+- intros. inversion H0. apply bs_Ge_T with (za := za) (zb := zb). 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Ge. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Ge. auto. auto.
+ * auto. 
+ * apply bs_Ge_F with (za := za) (zb := zb).
+   apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Ge. auto. auto.
+   apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Ge. auto. auto.
+   auto. 
+- intros. inversion H0. apply bs_Gt_T with (za := za) (zb := zb). 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Gt. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Gt. auto. auto.
+ * auto. 
+ * apply bs_Gt_F with (za := za) (zb := zb).
+   apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Gt. auto. auto.
+   apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Gt. auto. auto.
+   auto. 
+- intros. inversion H0. apply bs_Eq_T with (za := za) (zb := zb). 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Eq. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Eq. auto. auto.
+ * auto. 
+ * apply bs_Eq_F with (za := za) (zb := zb).
+   apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Eq. auto. auto.
+   apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Eq. auto. auto.
+   auto. 
+- intros. inversion H0. apply bs_Ne_T with (za := za) (zb := zb). 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Ne. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Ne. auto. auto.
+ * auto. 
+ * apply bs_Ne_F with (za := za) (zb := zb).
+   apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Ne. auto. auto.
+   apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Ne. auto. auto.
+   auto. 
+- intros. inversion H0. apply bs_And with (za := za) (zb := zb). 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_And. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_And. auto. auto.
+ * auto.
+ * auto.
+- intros. inversion H0. apply bs_Or with (za := za) (zb := zb). 
+ * apply IHe1 with (s1 := s1). intros. 
+   apply H. apply v_Or. auto. auto.
+ * apply IHe2 with (s1 := s1). intros. 
+   apply H. apply v_Or. auto. auto.
+ * auto.
+ * auto.
+Qed.
+
 
 (* Semantic equivalence *)
 Reserved Notation "e1 '~~' e2" (at level 42, no associativity).
