@@ -479,10 +479,18 @@ apply eq_intro. intros. split.
 Qed.
 
 Lemma eq_symm: forall (e1 e2 : expr), e1 ~~ e2 -> e2 ~~ e1.
-Proof. admit. Admitted.
+Proof. 
+intros. apply eq_intro. intros. split.
++ inversion H. apply H0.
++ inversion H. apply H0.
+Qed.
 
 Lemma eq_trans: forall (e1 e2 e3 : expr), e1 ~~ e2 -> e2 ~~ e3 -> e1 ~~ e3.
-Proof. admit. Admitted.
+Proof. 
+intros. apply eq_intro. intros. split.
++ intros. inversion H. inversion H0.  apply H5. apply H2. auto.
++ intros. inversion H. inversion H0.  apply H2. apply H5. auto.
+Qed.
 
 (* Contexts *)
 Inductive Context : Type :=
