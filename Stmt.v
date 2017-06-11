@@ -49,12 +49,46 @@ Inductive bs_int : stmt -> conf -> conf -> Prop :=
                        [| e |] st => Z.one -> (st, i, o) == s ==> c' -> c' == WHILE e DO s END ==> c'' ->
                           (st, i, o) == WHILE e DO s END ==> c''
   | bs_While_False : forall (st : state Z) (i o : list Z) (e : expr) (s : stmt),
-                       [| e |] st => Z.zero -> (st, i, o) == WHILE e DO s END ==> (st, i, o)
+                       [| e |] st => Z.zero -> (st, i, o) == WHILE e DO s END ==> (st, i, o) 
+  | bs_Rep_False  : forall (st : state Z) (i o : list Z) (c c' : conf) (e : expr) (s : stmt),
+                       [| e |] st => Z.zero -> 
+                       c == s ==> (st, i, o) ->
+                       (st, i, o) == REPEAT s UNTIL e END==> c'->
+                       c == REPEAT s UNTIL e END ==> c'
+  | bs_Rep_True  : forall (st : state Z) (i o : list Z) (c : conf) (e : expr) (s : stmt),
+                       [| e |] st => Z.one -> 
+                       c == s ==> (st, i, o) ->
+                       c == REPEAT s UNTIL e END==> (st, i, o)
 where "c1 == s ==> c2" := (bs_int s c1 c2).
 
 (* Big-step semantics is deterministic *)
 Lemma bs_int_deterministic : forall (c c1 c2 : conf) (s : stmt), c == s ==> c1 -> c == s ==> c2 -> c1 = c2.
-Proof. admit. Admitted.
+Proof. 
+intros c c1 c2 s . revert c. revert c1. revert c2.
+induction s.
++ intros. inversion H. inversion H0. congruence.
++ intros. inversion H. inversion H0. symmetry in H2. rewrite H2 in H7. inversion H7. 
+rewrite H12 in H10. destruct (bs_eval_deterministic e s z z0). auto. auto. auto.
++ intros. inversion H. inversion H0. symmetry in H1. rewrite H1 in H4. inversion H4. auto.
++ intros.  inversion H. inversion H0.  symmetry in H3. rewrite H3 in H7.  inversion H7. 
+rewrite H10 in H6. destruct (bs_eval_deterministic e s z z0). auto. auto. auto.
++ intros. inversion H. inversion H0. destruct IHs1 with (c1 := c') (c2 := c'0) (c := c).
+auto. auto. destruct IHs2 with (c1 := c1) (c2 := c2) (c := c'). auto. auto. auto.
++ intros. inversion H. inversion H0. symmetry in H3. rewrite H3 in H10. inversion H10. rewrite H16 in H13.
+rewrite H10 in H14. destruct IHs1 with (c := (s, i, o)) (c1 := c1) (c2 := c2). auto. auto. auto.
+symmetry in H3. rewrite H3 in H10. inversion H10. rewrite H16 in H13.
+rewrite H10 in H14. exfalso. assert (Z.zero = Z.one -> False). 
+intros. inversion H15. 
+remember (bs_eval_deterministic e s (Z.zero) (Z.one)). apply H15. apply e2. auto. auto. 
+inversion H0. symmetry in H3. rewrite H3 in H10. inversion H10. rewrite H16 in H13.
+rewrite H10 in H14. exfalso. assert (Z.zero = Z.one -> False). 
+intros. inversion H15. 
+apply H15.
+remember (bs_eval_deterministic e s (Z.zero) (Z.one)). apply e2. auto. auto. 
+symmetry in H3. rewrite H3 in H10. inversion H10. rewrite H10 in H14.
+rewrite H16 in H13.
+destruct IHs2 with (c := (s, i, o)) (c1 := c1) (c2 := c2). auto. auto. auto.
+
 
 Reserved Notation "s1 '~~~' s2" (at level 0).
 
