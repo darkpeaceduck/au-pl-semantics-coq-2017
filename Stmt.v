@@ -79,8 +79,25 @@ remember (bs_eval_deterministic e s (Z.zero) (Z.one)). apply e2. auto. auto.
 symmetry in H3. rewrite H3 in H10. inversion H10. rewrite H10 in H14.
 rewrite H16 in H13.
 destruct IHs2 with (c := (s, i, o)) (c1 := c1) (c2 := c2). auto. auto. auto.
-+ intros. revert H0. revert c2. induction H. 
-admit. admit. admit. admit. admit. admit. admit.
++ intros. revert H0. revert c2. induction H.
+
+{ intros. inversion H0. auto. } 
+{ intros. inversion H0. destruct (bs_eval_deterministic e0 s0 z z0). auto. auto. auto. }
+{ intros. inversion H0. auto. }
+{ intros. inversion H0. destruct (bs_eval_deterministic e0 s0 z z0). auto. auto. auto. }
+{ intros. inversion H1. apply IHbs_int1 in H4. symmetry in  H4. rewrite H4 in H7.
+apply IHbs_int2 in H7. auto. }
+{ intros. inversion H1. apply IHbs_int in H10. auto.
+exfalso. assert (Z.zero = Z.one -> False). 
+intros. inversion H11. apply H11. remember (bs_eval_deterministic e0 s0 (Z.zero) (Z.one)).
+apply e2. auto. auto.
+}
+{ intros. inversion H1. exfalso. assert (Z.zero = Z.one -> False). 
+intros. inversion H11. apply H11. remember (bs_eval_deterministic e0 s0 (Z.zero) (Z.one)).
+apply e2. auto. auto.
+apply IHbs_int in H10. auto.
+}
+
 intros. apply IHbs_int2.
 
 inversion H2.
@@ -96,18 +113,6 @@ apply e2. auto. auto.
 * auto.
 Qed.
 
-
-inversion H.  admit.
-
-
-inversion H0. symmetry in H5. rewrite H5 in H12. inversion H12.
-rewrite H12 in H11. 
-
-remember (bs_While_True  st i o c' c1 e s). destruct b.
-
-
-apply IHs with (c := ((st, i, o))) (c1 := c') (c2 := c'0).
-auto. auto. 
 
 Reserved Notation "s1 '~~~' s2" (at level 0).
 
