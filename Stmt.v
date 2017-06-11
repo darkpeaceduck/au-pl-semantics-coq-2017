@@ -50,15 +50,6 @@ Inductive bs_int : stmt -> conf -> conf -> Prop :=
                           (st, i, o) == WHILE e DO s END ==> c''
   | bs_While_False : forall (st : state Z) (i o : list Z) (e : expr) (s : stmt),
                        [| e |] st => Z.zero -> (st, i, o) == WHILE e DO s END ==> (st, i, o) 
-  | bs_Rep_False  : forall (st : state Z) (i o : list Z) (c c' : conf) (e : expr) (s : stmt),
-                       [| e |] st => Z.zero -> 
-                       c == s ==> (st, i, o) ->
-                       (st, i, o) == REPEAT s UNTIL e END==> c'->
-                       c == REPEAT s UNTIL e END ==> c'
-  | bs_Rep_True  : forall (st : state Z) (i o : list Z) (c : conf) (e : expr) (s : stmt),
-                       [| e |] st => Z.one -> 
-                       c == s ==> (st, i, o) ->
-                       c == REPEAT s UNTIL e END==> (st, i, o)
 where "c1 == s ==> c2" := (bs_int s c1 c2).
 
 (* Big-step semantics is deterministic *)
@@ -88,7 +79,35 @@ remember (bs_eval_deterministic e s (Z.zero) (Z.one)). apply e2. auto. auto.
 symmetry in H3. rewrite H3 in H10. inversion H10. rewrite H10 in H14.
 rewrite H16 in H13.
 destruct IHs2 with (c := (s, i, o)) (c1 := c1) (c2 := c2). auto. auto. auto.
++ intros. revert H0. revert c2. induction H. 
+admit. admit. admit. admit. admit. admit. admit.
+intros. apply IHbs_int2.
 
+inversion H2.
+- apply IHbs_int1 in H10. symmetry in H10. rewrite H10 in H11. auto.
+- exfalso. assert (Z.zero = Z.one -> False). 
+intros. inversion H10.  apply H10. remember (bs_eval_deterministic e0 st (Z.zero) (Z.one)).
+apply e2. auto. auto.
+
+- intros. inversion H0. 
+* exfalso. assert (Z.zero = Z.one -> False). 
+intros. inversion H10. apply H10.  remember (bs_eval_deterministic e0 st (Z.zero) (Z.one)).
+apply e2. auto. auto.
+* auto.
+Qed.
+
+
+inversion H.  admit.
+
+
+inversion H0. symmetry in H5. rewrite H5 in H12. inversion H12.
+rewrite H12 in H11. 
+
+remember (bs_While_True  st i o c' c1 e s). destruct b.
+
+
+apply IHs with (c := ((st, i, o))) (c1 := c') (c2 := c'0).
+auto. auto. 
 
 Reserved Notation "s1 '~~~' s2" (at level 0).
 
